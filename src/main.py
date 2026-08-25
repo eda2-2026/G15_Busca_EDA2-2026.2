@@ -38,8 +38,8 @@
 # ============================================================
 
 from leitura_csv import carregar_csv
-from estruturas import criar_lista_ordenada, criar_indice, criar_hash_nome, atualizar_estruturas
+from estruturas import criar_lista_ordenada, criar_indice, atualizar_estruturas
 from busca_sequencial import buscar_por_id_sequencial, buscar_por_nome_sequencial
 from busca_indexada import buscar_por_id_indexada
-from busca_hash import buscar_por_nome_hash
+from busca_hash import criar_hash_titulos, buscar_por_nome_hash
 from utils import imprimir_filme, imprimir_lista_filmes, normalizar_titulo, medir_tempo

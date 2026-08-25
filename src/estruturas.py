@@ -36,14 +36,5 @@ def criar_lista_ordenada():
 def criar_indice():
     return
 
-def criar_hash_nome():
-    return
-
-def criar_indice():
-    return
-
-def criar_hash_nome():
-    return
-
 def atualizar_estruturas():
     return

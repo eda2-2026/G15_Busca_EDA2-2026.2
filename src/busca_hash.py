@@ -22,8 +22,8 @@
 #   - A busca é eficiente, mas não mantém ordem dos elementos.
 # ============================================================
 
-def criar_hash_nome():
+def criar_hash_titulos():
     return
 
-def buscar_por_nome_hash():
+def buscar_por_hash_titulos():
     return
