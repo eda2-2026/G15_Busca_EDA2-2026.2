@@ -23,3 +23,9 @@ def busca_sequencial(lista, alvo):
 #   - A lista não está ordenada (ordem do CSV).
 #   - Busca por nome pode retornar múltiplos resultados.
 # ============================================================
+
+def buscar_por_id_sequencial():
+    return
+
+def buscar_por_nome_sequencial():
+    return

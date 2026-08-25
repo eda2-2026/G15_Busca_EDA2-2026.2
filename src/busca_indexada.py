@@ -21,3 +21,9 @@
 #   - Requer uma lista ordenada por ID (criada em estruturas.py).
 #   - O índice é composto por pares (ID, posição).
 # ============================================================
+
+def montar_indice():
+    return
+
+def buscar_por_id_indexada():
+    return

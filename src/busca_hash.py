@@ -21,3 +21,9 @@
 #   - Python implementa hashing internamente nos dicionários.
 #   - A busca é eficiente, mas não mantém ordem dos elementos.
 # ============================================================
+
+def criar_hash_nome():
+    return
+
+def buscar_por_nome_hash():
+    return

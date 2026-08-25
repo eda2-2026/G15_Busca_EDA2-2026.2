@@ -21,3 +21,9 @@
 #   - Mantém a ordem original das linhas do CSV.
 #   - Toda leitura é feita apenas no início do programa.
 # ============================================================
+
+def carregar_csv():
+    return
+
+def salvar_csv():
+    return

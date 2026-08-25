@@ -28,3 +28,22 @@
 #   - Este módulo não contém lógica de busca.
 #   - Funciona como uma "fábrica" de estruturas de dados.
 # ============================================================
+
+#estruturas
+def criar_lista_ordenada():
+    return
+
+def criar_indice():
+    return
+
+def criar_hash_nome():
+    return
+
+def criar_indice():
+    return
+
+def criar_hash_nome():
+    return
+
+def atualizar_estruturas():
+    return

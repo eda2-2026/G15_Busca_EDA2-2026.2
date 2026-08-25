@@ -23,3 +23,15 @@
 # OBSERVAÇÕES:
 #   - Funções genéricas, reutilizáveis em vários contextos.
 # ============================================================
+
+def normalizar_titulo():
+    return
+
+def imprimir_filme():
+    return
+
+def imprimir_lista_filmes():
+    return
+
+def medir_tempo():
+    return
