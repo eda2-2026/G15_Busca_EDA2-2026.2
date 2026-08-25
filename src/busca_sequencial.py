@@ -9,10 +9,12 @@
 #   - buscar_por_nome(filmes, nome_busca): Busca por título.
 # 
 # ALGORITMO:
-#   - Percorre a lista original do início ao fim.
-#   - Compara o campo especificado com o valor procurado.
-#   - Retorna o filme encontrado ou None.
-# 
+def busca_sequencial(lista, alvo):
+    for i in range(len(lista)):     # - Percorre a lista original do início ao fim.
+        if lista[i] == alvo:        # - Compara o campo especificado com o valor procurado.
+            return i                # - Retorna o filme encontrado
+    return -1                       # - Elemento não encontrado (colocar mensagem de falha)
+#
 # COMPLEXIDADE:
 #   - Tempo: O(n) no pior caso.
 #   - Espaço: O(1).
