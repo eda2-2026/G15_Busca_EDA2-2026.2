@@ -30,8 +30,8 @@
 # ============================================================
 
 #estruturas
-def criar_lista_ordenada():
-    return
+def criar_lista_ordenada(filmes):
+    return sorted(filmes, key=lambda filme: filme["id"])
 
 def criar_indice():
     return
