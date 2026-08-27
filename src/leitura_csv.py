@@ -28,7 +28,7 @@ def carregar_csv(caminho):
     filmes = []
 
     try:
-        with open(caminho, 'r') as arquivo:
+        with open(caminho, 'r', encoding='utf-8') as arquivo:
             leitor = csv.reader(arquivo)
             cabecalho = next(leitor)
 
@@ -55,7 +55,7 @@ def salvar_csv(caminho, filmes):
         return False
     
     try:
-        with open(caminho, 'w', newline='') as arquivo:
+        with open(caminho, 'w', newline='', encoding='utf-8') as arquivo:
             cabecalho = list(filmes[0].keys())
             escritor = csv.writer(arquivo)
             escritor.writerow(cabecalho)
