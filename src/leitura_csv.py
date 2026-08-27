@@ -22,8 +22,50 @@
 #   - Toda leitura é feita apenas no início do programa.
 # ============================================================
 
-def carregar_csv():
-    return
+import csv
 
-def salvar_csv():
-    return
+def carregar_csv(caminho):
+    filmes = []
+
+    try:
+        with open(caminho, 'r') as arquivo:
+            leitor = csv.reader(arquivo)
+            cabecalho = next(leitor)
+
+            for linha in leitor:
+                filme = dict(zip(cabecalho, linha))
+
+                for chave, valor in filme.items():
+                    if chave == 'id' or chave == 'Ano de exibição':
+                        filme[chave] = int(valor)
+
+                filmes.append(filme)
+
+        print(f"{len(filmes)} filmes carregados!")
+        return filmes
+        
+    except FileNotFoundError:
+        print(f"Arquivo '{caminho}' não encontrado!")
+        return []
+
+
+def salvar_csv(caminho, filmes):
+    if not filmes:
+        print("Nenhum filme para salvar!")
+        return False
+    
+    try:
+        with open(caminho, 'w', newline='') as arquivo:
+            cabecalho = list(filmes[0].keys())
+            escritor = csv.writer(arquivo)
+            escritor.writerow(cabecalho)
+            
+            for filme in filmes:
+                escritor.writerow([filme[col] for col in cabecalho])
+        
+        print(f"{len(filmes)} filmes salvos!")
+        return True
+    
+    except Exception as e:
+        print(f"Erro ao salvar: {e}")
+        return False
