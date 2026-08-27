@@ -3,6 +3,7 @@ from src.estruturas import criar_lista_ordenada
 import time
 from pathlib import Path
 
+# Teste da função criar_lista_ordenada integrada com carregar_csv
 
 caminho_csv = Path(__file__).parent.parent / "filmes.csv"
 
