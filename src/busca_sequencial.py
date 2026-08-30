@@ -5,19 +5,15 @@
 #   - Implementa a busca sequencial (ou linear) sem índice.
 # 
 # FUNÇÕES:
-#   - buscar_por_id(filmes, id_busca): Busca por ID.
-#   - buscar_por_nome(filmes, nome_busca): Busca por título.
+#   - criar_lista_ordenada(filmes): Ordena por ID.
+#   - buscar_por_id_sequencial(filmes, id_busca): Busca por ID.
+#   - buscar_por_nome_sequencial(filmes, nome_busca): Busca por título.
 # 
 # ALGORITMO:
-def criar_lista_ordenada(filmes):
-    return sorted(filmes, key=lambda filme: filme["id"])
-
-def busca_sequencial(lista, alvo):
-    for i in range(len(lista)):     # - Percorre a lista original do início ao fim.
-        if lista[i] == alvo:        # - Compara o campo especificado com o valor procurado.
-            return i                # - Retorna o filme encontrado
-    return -1                       # - Elemento não encontrado (colocar mensagem de falha)
-#
+#   1. Percorre a lista do início ao fim.
+#   2. Compara o campo especificado com o valor procurado.
+#   3. Retorna o filme encontrado ou None.
+# 
 # COMPLEXIDADE:
 #   - Tempo: O(n) no pior caso.
 #   - Espaço: O(1).
@@ -25,10 +21,37 @@ def busca_sequencial(lista, alvo):
 # OBSERVAÇÕES:
 #   - A lista não está ordenada (ordem do CSV).
 #   - Busca por nome pode retornar múltiplos resultados.
+#   - Case insensitive (não diferencia maiúsculas/minúsculas).
 # ============================================================
 
-def buscar_por_id_sequencial():
-    return
+def criar_lista_ordenada(filmes):
+    return sorted(filmes, key=lambda filme: filme["id"])
 
-def buscar_por_nome_sequencial():
-    return
+
+def buscar_por_id_sequencial(filmes, id_busca):
+    for filme in filmes:
+        if filme['id'] == id_busca:
+            return filme
+    return None
+
+
+def buscar_por_nome_sequencial(filmes, nome_busca):
+    resultados = []
+    nome_normalizado = nome_busca.strip().lower()
+    
+    for filme in filmes:
+        titulo_normalizado = filme['Título da obra'].strip().lower()
+        if titulo_normalizado == nome_normalizado:
+            resultados.append(filme)
+    
+    return resultados
+
+def buscar_por_id_sequencial_comparacoes(filmes, id_busca):
+    comparacoes = 0
+    
+    for filme in filmes:
+        comparacoes += 1
+        if filme['id'] == id_busca:
+            return filme, comparacoes
+    
+    return None, comparacoes
