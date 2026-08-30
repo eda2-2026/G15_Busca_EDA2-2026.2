@@ -11,15 +11,15 @@
 #       Escreve a lista de filmes de volta no CSV.
 # 
 # DETALHES DE IMPLEMENTAÇÃO:
-#   - Utiliza csv.DictReader para ler (cada linha vira um dict).
-#   - Utiliza csv.DictWriter para salvar.
-#   - Trata automaticamente vírgulas e aspas nos campos.
-#   - Cada dicionário contém TODAS as colunas do CSV, permitindo
-#     que as funções de busca retornem informações completas.
+#   - Utiliza csv.reader para ler (cada linha vira uma lista).
+#   - Utiliza csv.writer para salvar.
+#   - Converte apenas 'id' e 'Ano de exibição' para inteiro.
+#   - Demais campos permanecem como string.
 # 
 # OBSERVAÇÕES:
 #   - Mantém a ordem original das linhas do CSV.
 #   - Toda leitura é feita apenas no início do programa.
+#   - O cabeçalho do CSV tem a coluna 'id' (primeira coluna).
 # ============================================================
 
 import csv
@@ -41,7 +41,6 @@ def carregar_csv(caminho):
 
                 filmes.append(filme)
 
-        print(f"{len(filmes)} filmes carregados!")
         return filmes
         
     except FileNotFoundError:
