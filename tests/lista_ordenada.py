@@ -1,5 +1,5 @@
 from src.leitura_csv import carregar_csv
-from src.estruturas import criar_lista_ordenada
+from src.busca_sequencial import criar_lista_ordenada
 import time
 from pathlib import Path
 

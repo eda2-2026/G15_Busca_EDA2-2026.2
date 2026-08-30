@@ -9,6 +9,9 @@
 #   - buscar_por_nome(filmes, nome_busca): Busca por título.
 # 
 # ALGORITMO:
+def criar_lista_ordenada(filmes):
+    return sorted(filmes, key=lambda filme: filme["id"])
+
 def busca_sequencial(lista, alvo):
     for i in range(len(lista)):     # - Percorre a lista original do início ao fim.
         if lista[i] == alvo:        # - Compara o campo especificado com o valor procurado.
