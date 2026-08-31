@@ -59,12 +59,16 @@ Modo texto (menu no terminal):
 
 ```bash
 python3 src/main.py
+ou
+python -m src.main
 ```
 
 Interface gráfica (janela com abas Buscar / Inserir / Excluir, com autocomplete no campo de título):
 
 ```bash
 python3 src/gui.py
+ou
+python -m src.gui
 ```
 
 > A interface gráfica usa `tkinter`, que já vem com o Python na maioria dos sistemas. Se aparecer `ModuleNotFoundError: No module named 'tkinter'` no Linux, instale com `sudo apt install python3-tk`.
