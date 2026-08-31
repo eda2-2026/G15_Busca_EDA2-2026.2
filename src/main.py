@@ -48,7 +48,8 @@ sys.path.append(os.path.dirname(__file__))
 
 from leitura_csv import carregar_csv, salvar_csv
 from busca_indexada import construir_indice, buscar_por_id_comparacoes, inserir_filme, excluir_filme
-from busca_sequencial import buscar_por_id_sequencial, buscar_por_nome_sequencial, buscar_por_id_sequencial_comparacoes
+from busca_sequencial import buscar_por_nome_sequencial, buscar_por_id_sequencial_comparacoes, buscar_por_nome_sequencial_comparacoes
+from busca_hash import criar_hash_titulos, buscar_por_hash_titulos_operacoes
 
 def exibir_filme(filme):
     print(f"\n 🎥 Título: {filme['Título da obra']} ({filme['Ano de exibição']})")
@@ -92,25 +93,33 @@ def buscar_por_id(filmes, blocos, indice):
         exibir_filme(filme_idx or filme_seq)
 
 
-def buscar_por_nome(filmes):
+def buscar_por_nome(filmes, hash_titulos):
     print("\n ╭─ Busca por Título")
     nome = input(" ╰─❯ Digite o Título: ").strip()
-    
+
+    # Busca sequencial
     inicio = time.perf_counter()
-    resultados = buscar_por_nome_sequencial(filmes, nome)
-    tempo = (time.perf_counter() - inicio) * 1000
-    
+    resultados_seq, comps_seq = buscar_por_nome_sequencial_comparacoes(filmes, nome)
+    tempo_seq = (time.perf_counter() - inicio) * 1000
+
+    # Busca por hash
+    inicio = time.perf_counter()
+    resultados_hash, ops_hash = buscar_por_hash_titulos_operacoes(hash_titulos, nome)
+    tempo_hash = (time.perf_counter() - inicio) * 1000
+
     print("\n [ RESULTADOS DA BUSCA ]")
-    print("  " + "-"*40)
-    
-    if resultados:
-        print(f"  ✓ {len(resultados)} filme(s) encontrado(s) em {tempo:.3f} ms")
-        print("  " + "-"*40)
-        for filme in resultados:
+    print("  " + "-" * 50)
+
+    print(f" • Hash       : {tempo_hash:.3f} ms | {ops_hash:3d} operações")
+    print(f" • Sequencial : {tempo_seq:.3f} ms | {comps_seq:3d} comparações")
+
+    print("  " + "-" * 50)
+
+    if resultados_hash:
+        for filme in resultados_hash:
             exibir_filme(filme)
     else:
-        print(f" ✕ Nenhum filme encontrado com esse título.")
-        print("  " + "-"*40)
+        print(" ✕ Nenhum filme encontrado com esse título.")
 
 
 def inserir(filmes, blocos, indice):
@@ -244,6 +253,8 @@ def main():
         return
     
     blocos, indice = construir_indice(filmes)
+
+    hash_titulos = criar_hash_titulos(filmes)
     
     while True:
         # Header decorativo
@@ -267,7 +278,7 @@ def main():
             if tipo == "1":
                 buscar_por_id(filmes, blocos, indice)
             elif tipo == "2":
-                buscar_por_nome(filmes)
+                buscar_por_nome(filmes, hash_titulos)
             else:
                 print("\n  [!] Opção inválida!")
         
@@ -291,4 +302,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
