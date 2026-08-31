@@ -9,6 +9,11 @@
 #       Lê o arquivo CSV e retorna a lista de filmes (dicionários).
 #   - salvar_csv(caminho, filmes): 
 #       Escreve a lista de filmes de volta no CSV.
+#   - normalizar_titulo(titulo):
+#       Normaliza um título (sem acento, minúsculo, sem espaços
+#       extras) para uso como chave de comparação/busca. Usada
+#       pela busca sequencial e pela busca por hash, para que
+#       ambas retornem o mesmo conjunto de resultados.
 # 
 # DETALHES DE IMPLEMENTAÇÃO:
 #   - Utiliza csv.reader para ler (cada linha vira uma lista).
@@ -23,6 +28,7 @@
 # ============================================================
 
 import csv
+import unicodedata
 
 def carregar_csv(caminho):
     filmes = []
@@ -68,3 +74,27 @@ def salvar_csv(caminho, filmes):
     except Exception as e:
         print(f"Erro ao salvar: {e}")
         return False
+
+
+def normalizar_titulo(titulo):
+    """
+    Normaliza o título para ser utilizado como chave de comparação
+    (busca sequencial) ou como chave da tabela hash (busca por hash).
+
+    Remove:
+    - acentos;
+    - espaços extras;
+    - diferenças entre maiúsculas e minúsculas.
+    """
+
+    titulo = titulo.strip().lower()
+
+    titulo = unicodedata.normalize('NFD', titulo)
+
+    titulo = ''.join(
+        caractere
+        for caractere in titulo
+        if unicodedata.category(caractere) != 'Mn'
+    )
+
+    return titulo
