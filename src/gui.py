@@ -26,6 +26,7 @@
 #     no CSV (mesmo comportamento do main.py em modo texto).
 # ============================================================
 
+import bisect
 import os
 import sys
 import time
@@ -34,7 +35,7 @@ from tkinter import ttk, messagebox
 
 sys.path.append(os.path.dirname(__file__))
 
-from leitura_csv import carregar_csv, salvar_csv
+from leitura_csv import carregar_csv, salvar_csv, normalizar_titulo
 from busca_indexada import (
     construir_indice,
     buscar_por_id_comparacoes,
@@ -86,6 +87,16 @@ class AppFilmes(tk.Tk):
         self.hash_titulos = criar_hash_titulos(self.filmes)
         self.alteracoes_pendentes = False
 
+        # --- lista de títulos únicos, usada pelo autocomplete da busca ---
+        self.titulos_unicos = []
+        self._chaves_titulos_vistas = set()
+        for filme in self.filmes:
+            self._registrar_titulo_para_autocomplete(filme["Título da obra"])
+        self.titulos_unicos.sort(key=normalizar_titulo)
+
+        # --- estado do autocomplete (o widget em si é criado na aba) ---
+        self.lista_sugestoes = None
+
         self.protocol("WM_DELETE_WINDOW", self._ao_fechar)
 
         self._montar_layout()
@@ -119,6 +130,99 @@ class AppFilmes(tk.Tk):
         self._montar_aba_excluir(aba_excluir)
 
     # ==========================================================
+    # AUTOCOMPLETE (usado no campo de busca por título)
+    # ==========================================================
+    def _registrar_titulo_para_autocomplete(self, titulo):
+        """Adiciona um título à lista usada pelo autocomplete, evitando
+        duplicatas (mesmo título com acento/caixa diferente)."""
+        chave = normalizar_titulo(titulo)
+        if chave not in self._chaves_titulos_vistas:
+            self._chaves_titulos_vistas.add(chave)
+            self.titulos_unicos.append(titulo)
+
+    def _ao_trocar_tipo_busca(self):
+        self._esconder_sugestoes()
+
+    def _ao_digitar_busca(self, evento):
+        # Down/Up/Return/Escape têm bindings próprios (navegação na lista)
+        if evento.keysym in ("Down", "Up", "Return", "Escape"):
+            return
+
+        if self.tipo_busca.get() != "nome":
+            self._esconder_sugestoes()
+            return
+
+        texto = self.entrada_busca.get().strip()
+        if not texto:
+            self._esconder_sugestoes()
+            return
+
+        alvo = normalizar_titulo(texto)
+
+        # prioriza títulos que COMEÇAM com o texto digitado
+        correspondentes = [
+            t for t in self.titulos_unicos if normalizar_titulo(t).startswith(alvo)
+        ]
+
+        # se não achou nenhum começando, tenta achar em qualquer posição
+        if not correspondentes:
+            correspondentes = [
+                t for t in self.titulos_unicos if alvo in normalizar_titulo(t)
+            ]
+
+        correspondentes = correspondentes[:8]
+
+        if correspondentes:
+            self._mostrar_sugestoes(correspondentes)
+        else:
+            self._esconder_sugestoes()
+
+    def _mostrar_sugestoes(self, itens):
+        self.lista_sugestoes.delete(0, tk.END)
+        for item in itens:
+            self.lista_sugestoes.insert(tk.END, item)
+        self.lista_sugestoes.config(height=len(itens))
+
+        # posiciona a lista logo abaixo do campo de busca, dentro da
+        # própria aba (nada de janela nova: é só um widget sobreposto)
+        x = self.entrada_busca.winfo_rootx() - self._aba_buscar.winfo_rootx()
+        y = (
+            self.entrada_busca.winfo_rooty()
+            + self.entrada_busca.winfo_height()
+            - self._aba_buscar.winfo_rooty()
+        )
+        largura = self.entrada_busca.winfo_width()
+
+        self.lista_sugestoes.place(x=x, y=y, width=largura)
+        self.lista_sugestoes.lift()
+
+    def _esconder_sugestoes(self):
+        if self.lista_sugestoes is not None:
+            self.lista_sugestoes.place_forget()
+
+    def _focar_sugestoes(self, evento):
+        if self.lista_sugestoes is not None and self.lista_sugestoes.winfo_ismapped():
+            self.lista_sugestoes.focus_set()
+            self.lista_sugestoes.selection_clear(0, tk.END)
+            self.lista_sugestoes.selection_set(0)
+            self.lista_sugestoes.activate(0)
+            return "break"  # impede o cursor de "sair" do campo de texto
+
+    def _selecionar_sugestao(self, evento=None):
+        selecao = self.lista_sugestoes.curselection()
+        if not selecao:
+            return
+
+        valor = self.lista_sugestoes.get(selecao[0])
+
+        self.entrada_busca.delete(0, tk.END)
+        self.entrada_busca.insert(0, valor)
+        self._esconder_sugestoes()
+        self.entrada_busca.focus_set()
+
+        self._executar_busca()
+
+    # ==========================================================
     # ABA: BUSCAR
     # ==========================================================
     def _montar_aba_buscar(self, aba):
@@ -126,20 +230,44 @@ class AppFilmes(tk.Tk):
         topo.pack(fill="x")
 
         self.tipo_busca = tk.StringVar(value="nome")
-        ttk.Radiobutton(topo, text="Por ID", variable=self.tipo_busca, value="id").pack(
-            side="left"
-        )
         ttk.Radiobutton(
-            topo, text="Por Título", variable=self.tipo_busca, value="nome"
+            topo,
+            text="Por ID",
+            variable=self.tipo_busca,
+            value="id",
+            command=self._ao_trocar_tipo_busca,
+        ).pack(side="left")
+        ttk.Radiobutton(
+            topo,
+            text="Por Título",
+            variable=self.tipo_busca,
+            value="nome",
+            command=self._ao_trocar_tipo_busca,
         ).pack(side="left", padx=(8, 16))
 
         self.entrada_busca = ttk.Entry(topo, width=40)
         self.entrada_busca.pack(side="left", fill="x", expand=True)
         self.entrada_busca.bind("<Return>", lambda evento: self._executar_busca())
+        self.entrada_busca.bind("<KeyRelease>", self._ao_digitar_busca)
+        self.entrada_busca.bind("<Down>", self._focar_sugestoes)
+        self.entrada_busca.bind("<Escape>", lambda evento: self._esconder_sugestoes())
+        self.entrada_busca.bind(
+            "<FocusOut>", lambda evento: self.after(150, self._esconder_sugestoes)
+        )
 
         ttk.Button(topo, text="Buscar", command=self._executar_busca).pack(
             side="left", padx=(8, 0)
         )
+
+        # widget de sugestões do autocomplete: fica "escondido" (sem place())
+        # até que _mostrar_sugestoes() o posicione embaixo do campo de busca
+        self._aba_buscar = aba
+        self.lista_sugestoes = tk.Listbox(
+            aba, activestyle="dotbox", exportselection=False, relief="solid", borderwidth=1
+        )
+        self.lista_sugestoes.bind("<<ListboxSelect>>", self._selecionar_sugestao)
+        self.lista_sugestoes.bind("<Return>", self._selecionar_sugestao)
+        self.lista_sugestoes.bind("<Escape>", lambda evento: self._esconder_sugestoes())
 
         self.label_desempenho = ttk.Label(
             aba, text="", padding=(10, 4), foreground="#205020"
@@ -165,6 +293,8 @@ class AppFilmes(tk.Tk):
         self.tabela_resultados.pack(fill="both", expand=True, padx=10, pady=(0, 10))
 
     def _executar_busca(self):
+        self._esconder_sugestoes()
+
         termo = self.entrada_busca.get().strip()
         if not termo:
             messagebox.showwarning("Atenção", "Digite algo para buscar.")
@@ -290,12 +420,12 @@ class AppFilmes(tk.Tk):
         self.filmes.append(novo_filme)
         inserir_filme(self.blocos, self.indice, novo_filme)
 
-        # mantém a tabela hash também atualizada com o novo filme
-        from leitura_csv import normalizar_titulo
-
+        # mantém a tabela hash e a lista de autocomplete também atualizadas
         self.hash_titulos.inserir(
             normalizar_titulo(novo_filme["Título da obra"]), novo_filme
         )
+        self._registrar_titulo_para_autocomplete(novo_filme["Título da obra"])
+        self.titulos_unicos.sort(key=normalizar_titulo)
 
         self.alteracoes_pendentes = True
         self.barra_status.config(
