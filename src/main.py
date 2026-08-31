@@ -231,7 +231,13 @@ def excluir(filmes, blocos, indice):
 
 
 def main():
-    filmes = carregar_csv('filmes.csv')
+    # filmes.csv está na raiz do projeto, um nível acima de src/
+    caminho_csv = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        'filmes.csv'
+    )
+
+    filmes = carregar_csv(caminho_csv)
     
     if not filmes:
         print("\n [!] Erro: Nenhum filme carregado!")
@@ -275,7 +281,7 @@ def main():
             print("\n ╭─ Encerrar o Sistema")
             salvar = input(" ╰─❯ Salvar alterações no CSV? (s/n): ").strip().lower()
             if salvar == "s":
-                salvar_csv('filmes.csv', filmes)
+                salvar_csv(caminho_csv, filmes)
                 print("      ✓ Alterações salvas com sucesso.")
             print("\n  Saindo... Até logo!\n")
             break
