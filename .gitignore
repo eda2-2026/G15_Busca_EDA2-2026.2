@@ -1,14 +1,12 @@
-# Python
+# Bytecode / cache do Python
 __pycache__/
+*.pyc
+*.pyo
 
 # Ambientes virtuais
 .venv/
 venv/
 env/
 
-# IDEs
+# Arquivos de IDE
 .vscode/
-
-# Arquivos de teste
-.pytest_cache/
-.coverage
