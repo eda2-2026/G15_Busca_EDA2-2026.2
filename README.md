@@ -47,6 +47,8 @@ G15_Busca_EDA2-2026.2/
 │   ├── busca_sequencial.py     # busca sequencial (por ID e por Título)
 │   ├── busca_indexada.py       # busca sequencial indexada (por ID)
 │   └── busca_hash.py           # tabela hash própria (por Título)
+└── tests/
+    └── teste_desempenho.py     # gera os números da tabela de desempenho abaixo
 ```
 
 ## Como executar
@@ -88,7 +90,7 @@ Tabela hash **implementada do zero** (sem `dict`, `set` ou `hash()` do Python):
 ### Complexidade teórica
 
 | Algoritmo | Chave | Estrutura | Melhor caso | Pior caso |
-|---|---|---|:---:|:---:|:---:|
+|---|---|---|:---:|:---:|
 | Busca Sequencial | ID | Lista (ordem do CSV) | O(1) | O(n) |
 | Busca Sequencial Indexada | ID | Blocos de √n + índice | O(1) | O(√n) |
 | Busca Sequencial | Título | Lista (ordem do CSV) | O(n)¹ | O(n) |
@@ -127,6 +129,21 @@ Medições feitas com `time.perf_counter()`, tirando a média de várias repeti�
 - O maior balde da tabela hash tem apenas **6 itens colidindo** entre 4.854 chaves distintas, provando que a função hash própria (djb2) e o redimensionamento automático estão distribuindo bem as chaves.
 - Em uma escala de microssegundos, o tempo em ms sofre ruído de medição do próprio interpretador Python; por isso, o **número de comparações/operações** é a métrica mais confiável para comparar os algoritmos entre si e os tempos servem para ilustrar a ordem de grandeza real da diferença.
 
+## 🧪 Como reproduzir os testes de desempenho
+ 
+Os números da tabela acima **não são estimados** — foram gerados pelo script [`tests/teste_desempenho.py`](./tests/teste_desempenho.py), rodando direto sobre o `filmes.csv` real (7.052 filmes). Para reproduzir:
+ 
+```bash
+python3 tests/teste_desempenho.py
+```
+ 
+**Como o script mede cada caso:**
+ 
+- **Repetição + média**: uma busca isolada dura microssegundos, tempo curto demais pra confiar num único cronômetro. Por isso cada busca é repetida várias vezes seguidas (500× para as mais rápidas, menos para a sequencial por título, que já é lenta sozinha) e o script divide o tempo total pelo número de repetições.
+- **Melhor caso**: usa uma chave escolhida para dar o resultado mais rápido possível, por exemplo, o primeiro elemento da lista para a busca por ID.
+- **Pior caso**: usa uma chave que força o máximo de trabalho, um ID inexistente (obriga a varrer tudo), ou, no caso da hash, a **última chave do maior balde real da tabela** (o script primeiro localiza esse balde na estrutura de dados, não chuta um valor).
+- **Caso médio**: tira uma amostra aleatória de IDs/títulos reais da base (`random.seed(7)`, fixa) e mede a média do tempo e das comparações sobre essa amostra — a mesma seed garante que a amostra é sempre a mesma entre execuções, então o resultado é reprodutível (o tempo em ms pode variar um pouco conforme a máquina, mas o número de comparações/operações deve se manter igual).
+ 
 ## Interface gráfica
 
 Além do menu em modo texto, o projeto conta com uma interface gráfica simples (`src/gui.py`, Tkinter) com três abas:
@@ -160,6 +177,7 @@ Além do menu em modo texto, o projeto conta com uma interface gráfica simples 
 | 21/1030658 | 241025710 |
 
 </div>
+
 ---
 
 ## Referências
