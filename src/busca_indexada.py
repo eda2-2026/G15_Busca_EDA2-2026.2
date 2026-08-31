@@ -28,7 +28,6 @@
 #   - Redistribui quando o último bloco fica cheio.
 #   - IDs originais do CSV são preservados.
 # ============================================================
-
 import math
 
 def construir_indice(filmes):

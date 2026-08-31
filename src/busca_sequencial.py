@@ -21,11 +21,6 @@
 # OBSERVAÇÕES:
 #   - A lista não está ordenada (ordem do CSV).
 #   - Busca por nome pode retornar múltiplos resultados.
-#   - Case insensitive (não diferencia maiúsculas/minúsculas).
-#   - Busca por nome usa normalizar_titulo() (mesma normalização
-#     de acentos/espaços/caixa usada na busca por hash), para que
-#     os dois métodos retornem exatamente o mesmo conjunto de
-#     resultados e a comparação de desempenho seja justa.
 # ============================================================
 
 from leitura_csv import normalizar_titulo
@@ -33,13 +28,11 @@ from leitura_csv import normalizar_titulo
 def criar_lista_ordenada(filmes):
     return sorted(filmes, key=lambda filme: filme["id"])
 
-
 def buscar_por_id_sequencial(filmes, id_busca):
     for filme in filmes:
         if filme['id'] == id_busca:
             return filme
     return None
-
 
 def buscar_por_nome_sequencial(filmes, nome_busca):
     resultados = []

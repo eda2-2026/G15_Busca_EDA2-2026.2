@@ -24,9 +24,7 @@
 # OBSERVAÇÕES:
 #   - Mantém a ordem original das linhas do CSV.
 #   - Toda leitura é feita apenas no início do programa.
-#   - O cabeçalho do CSV tem a coluna 'id' (primeira coluna).
 # ============================================================
-
 import csv
 import unicodedata
 
@@ -86,7 +84,6 @@ def normalizar_titulo(titulo):
     - espaços extras;
     - diferenças entre maiúsculas e minúsculas.
     """
-
     titulo = titulo.strip().lower()
 
     titulo = unicodedata.normalize('NFD', titulo)
@@ -96,5 +93,4 @@ def normalizar_titulo(titulo):
         for caractere in titulo
         if unicodedata.category(caractere) != 'Mn'
     )
-
     return titulo

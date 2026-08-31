@@ -57,7 +57,6 @@ def exibir_filme(filme):
     print(f"    ├─ Gênero..: {filme['Gênero']}")
     print(f"    └─ País....: {filme['País(es) produtor(es) da obra']}")
 
-
 def buscar_por_id(filmes, blocos, indice):
     print("\n ╭─ Busca por ID")
     try:
@@ -91,7 +90,6 @@ def buscar_por_id(filmes, blocos, indice):
     
     if filme_idx or filme_seq:
         exibir_filme(filme_idx or filme_seq)
-
 
 def buscar_por_nome(filmes, hash_titulos):
     print("\n ╭─ Busca por Título")
@@ -157,7 +155,6 @@ def inserir(filmes, blocos, indice):
     print(f"  • Lista....: {tempo_lista:.3f} ms")
     print(f"  • Indexada.: {tempo_idx:.3f} ms")
     print(f"\n  ✓ Sucesso: Filme ID {novo_id} inserido no sistema!")
-
 
 def excluir(filmes, blocos, indice):
     print("\n [ EXCLUIR FILME ]")
@@ -238,9 +235,7 @@ def excluir(filmes, blocos, indice):
         print(f"  • Indexada.: {tempo_idx:.3f} ms")
         print(f"\n  ✓ Sucesso: Filme ID {filme_removido['id']} ('{filme_removido['Título da obra']}') excluído!")
 
-
 def main():
-    # filmes.csv está na raiz do projeto, um nível acima de src/
     caminho_csv = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
         'filmes.csv'
@@ -253,11 +248,9 @@ def main():
         return
     
     blocos, indice = construir_indice(filmes)
-
     hash_titulos = criar_hash_titulos(filmes)
     
     while True:
-        # Header decorativo
         print("\n")
         print(" ╔════════════════════════════════════════╗")
         print(" ║       SISTEMA DE BUSCA DE FILMES       ║")
@@ -298,7 +291,6 @@ def main():
             break
         else:
             print("\n  [!] Opção inválida, tente novamente.")
-
 
 if __name__ == "__main__":
     main()

@@ -32,17 +32,8 @@
 #     (na prática não acontece, pois a função hash espalha bem e
 #     o redimensionamento evita baldes muito cheios).
 #   - Espaço: O(n) para armazenar os baldes.
-#
-# OBSERVAÇÕES:
-#   - Diferente da versão anterior (dict do Python), aqui TODA a
-#     lógica de hashing, colisão e redimensionamento é nossa.
-#   - normalizar_titulo() continua vindo de leitura_csv.py, pois
-#     é usada tanto pela busca sequencial quanto pela por hash,
-#     garantindo que as duas retornem o mesmo conjunto de resultados.
 # ============================================================
-
 from leitura_csv import normalizar_titulo
-
 
 class TabelaHash:
     """
@@ -61,13 +52,12 @@ class TabelaHash:
         self.quantidade_chaves = 0  # nº de chaves distintas armazenadas
 
     # --------------------------------------------------------
-    # FUNÇÃO HASH (própria, estilo djb2)
+    # FUNÇÃO HASH
     # --------------------------------------------------------
     def _funcao_hash(self, chave):
         """
         Transforma uma string (título normalizado) em um índice
         dentro do vetor de baldes.
-
         Ideia do djb2: começa com um valor "semente" (5381) e, para
         cada caractere, multiplica o acumulado por 33 e soma o
         código do caractere (ord). A multiplicação por 33 ajuda a
@@ -194,7 +184,6 @@ class TabelaHash:
 def criar_hash_titulos(filmes):
     """
     Cria a tabela hash dos filmes.
-
     Chave:
         título normalizado
 
@@ -209,7 +198,6 @@ def criar_hash_titulos(filmes):
         hash_titulos.inserir(chave, filme)
 
     return hash_titulos
-
 
 def buscar_por_hash_titulos(hash_titulos, nome_busca):
     """

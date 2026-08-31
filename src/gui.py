@@ -2,16 +2,10 @@
 # ARQUIVO: src/gui.py
 #
 # DESCRIÇÃO:
-#   - Interface gráfica simples (Tkinter, vem junto do Python,
-#     não precisa instalar nada) para o sistema de busca de
-#     filmes. É só uma "casca" visual: toda a lógica de busca,
-#     inserção e exclusão continua nos módulos originais
-#     (busca_sequencial.py, busca_indexada.py, busca_hash.py).
+#   - Interface gráfica simples (Tkinter)
 #
 # COMO EXECUTAR:
 #   python3 src/gui.py
-#   (a partir da raiz do projeto, no mesmo lugar onde já
-#   rodava "python3 src/main.py")
 #
 # ABAS:
 #   - Buscar  : busca por ID (indexada + sequencial) ou por
@@ -22,11 +16,8 @@
 #               um filme com o mesmo título, permite escolher).
 #
 # OBSERVAÇÕES:
-#   - Ao fechar a janela, pergunta se deseja salvar as alterações
-#     no CSV (mesmo comportamento do main.py em modo texto).
+#   - Ao fechar a janela, pergunta se deseja salvar as alterações no CSV.
 # ============================================================
-
-import bisect
 import os
 import sys
 import time
@@ -36,19 +27,9 @@ from tkinter import ttk, messagebox
 sys.path.append(os.path.dirname(__file__))
 
 from leitura_csv import carregar_csv, salvar_csv, normalizar_titulo
-from busca_indexada import (
-    construir_indice,
-    buscar_por_id_comparacoes,
-    inserir_filme,
-    excluir_filme,
-)
-from busca_sequencial import (
-    buscar_por_nome_sequencial,
-    buscar_por_id_sequencial_comparacoes,
-    buscar_por_nome_sequencial_comparacoes,
-)
+from busca_indexada import construir_indice, buscar_por_id_comparacoes, inserir_filme, excluir_filme
+from busca_sequencial import buscar_por_nome_sequencial, buscar_por_id_sequencial_comparacoes, buscar_por_nome_sequencial_comparacoes
 from busca_hash import criar_hash_titulos, buscar_por_hash_titulos_operacoes
-
 
 CAMPOS_INSERIR = [
     ("Título", "Título da obra"),
@@ -60,7 +41,6 @@ CAMPOS_INSERIR = [
     ("Origem da distribuidora", "Origem da empresa distribuidora"),
 ]
 
-
 class AppFilmes(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -69,7 +49,6 @@ class AppFilmes(tk.Tk):
         self.geometry("880x560")
         self.minsize(760, 480)
 
-        # --- carrega os dados e monta as estruturas de busca ---
         self.caminho_csv = os.path.join(
             os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
             "filmes.csv",
@@ -144,7 +123,6 @@ class AppFilmes(tk.Tk):
         self._esconder_sugestoes()
 
     def _ao_digitar_busca(self, evento):
-        # Down/Up/Return/Escape têm bindings próprios (navegação na lista)
         if evento.keysym in ("Down", "Up", "Return", "Escape"):
             return
 
@@ -163,8 +141,6 @@ class AppFilmes(tk.Tk):
         correspondentes = [
             t for t in self.titulos_unicos if normalizar_titulo(t).startswith(alvo)
         ]
-
-        # se não achou nenhum começando, tenta achar em qualquer posição
         if not correspondentes:
             correspondentes = [
                 t for t in self.titulos_unicos if alvo in normalizar_titulo(t)
@@ -182,9 +158,6 @@ class AppFilmes(tk.Tk):
         for item in itens:
             self.lista_sugestoes.insert(tk.END, item)
         self.lista_sugestoes.config(height=len(itens))
-
-        # posiciona a lista logo abaixo do campo de busca, dentro da
-        # própria aba (nada de janela nova: é só um widget sobreposto)
         x = self.entrada_busca.winfo_rootx() - self._aba_buscar.winfo_rootx()
         y = (
             self.entrada_busca.winfo_rooty()
@@ -206,7 +179,7 @@ class AppFilmes(tk.Tk):
             self.lista_sugestoes.selection_clear(0, tk.END)
             self.lista_sugestoes.selection_set(0)
             self.lista_sugestoes.activate(0)
-            return "break"  # impede o cursor de "sair" do campo de texto
+            return "break"
 
     def _selecionar_sugestao(self, evento=None):
         selecao = self.lista_sugestoes.curselection()
@@ -258,9 +231,6 @@ class AppFilmes(tk.Tk):
         ttk.Button(topo, text="Buscar", command=self._executar_busca).pack(
             side="left", padx=(8, 0)
         )
-
-        # widget de sugestões do autocomplete: fica "escondido" (sem place())
-        # até que _mostrar_sugestoes() o posicione embaixo do campo de busca
         self._aba_buscar = aba
         self.lista_sugestoes = tk.Listbox(
             aba, activestyle="dotbox", exportselection=False, relief="solid", borderwidth=1
@@ -419,8 +389,6 @@ class AppFilmes(tk.Tk):
 
         self.filmes.append(novo_filme)
         inserir_filme(self.blocos, self.indice, novo_filme)
-
-        # mantém a tabela hash e a lista de autocomplete também atualizadas
         self.hash_titulos.inserir(
             normalizar_titulo(novo_filme["Título da obra"]), novo_filme
         )
@@ -554,7 +522,7 @@ class AppFilmes(tk.Tk):
                 "Salvar alterações",
                 "Há alterações não salvas. Deseja salvar no CSV antes de sair?",
             )
-            if salvar is None:  # cancelou o fechamento
+            if salvar is None:
                 return
             if salvar:
                 salvar_csv(self.caminho_csv, self.filmes)
