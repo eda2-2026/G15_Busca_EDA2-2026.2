@@ -131,10 +131,10 @@ Medições feitas com `time.perf_counter()`, tirando a média de várias repeti�
 
 ## 🧪 Como reproduzir os testes de desempenho
  
-Os números da tabela acima **não são estimados** — foram gerados pelo script [`tests/teste_desempenho.py`](./tests/teste_desempenho.py), rodando direto sobre o `filmes.csv` real (7.052 filmes). Para reproduzir:
+Os números da tabela acima **não são estimados** — foram gerados pelo script [`tests/teste_desempenho.py`](./tests/teste_desempenho.py), rodando direto sobre o `filmes.csv` real (7.052 filmes). Para reproduzir partindo da raiz:
  
 ```bash
-python3 tests/teste_desempenho.py
+python -m tests.teste_desempenho
 ```
  
 **Como o script mede cada caso:**
