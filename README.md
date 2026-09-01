@@ -160,13 +160,13 @@ Além do menu em modo texto, o projeto conta com uma interface gráfica simples 
 
 > Adicione as imagens em `docs/screenshots/` e ajuste os caminhos abaixo.
 
-| Menu principal (modo texto) | Interface gráfica — Buscar |
+| Interface gráfica — Buscar | Resultado de uma busca por título |
 |---|---|
-| ![Menu principal](docs/screenshots/menu-principal.png) | ![Aba Buscar](docs/screenshots/gui-buscar.png) |
+| ![Menu principal](screenshots/interface_busca.png) | ![Resultado Busca](screenshots/interface_comparacao.png) |
 
-| Resultado de uma busca por título | Interface gráfica — Inserir |
+| Interface gráfica — Inserir |
 |---|---|
-| ![Resultado da busca](docs/screenshots/resultado-busca.png) | ![Aba Inserir](docs/screenshots/gui-inserir.png) |
+| ![Menu inserir](screenshots/interface_inserir.png) |
 
 ## Vídeo de apresentação
 
