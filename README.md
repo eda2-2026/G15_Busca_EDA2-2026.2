@@ -158,8 +158,6 @@ Além do menu em modo texto, o projeto conta com uma interface gráfica simples 
 
 ## 📸 Capturas de tela
 
-> Adicione as imagens em `docs/screenshots/` e ajuste os caminhos abaixo.
-
 | Interface gráfica — Buscar | Resultado de uma busca por título |
 |---|---|
 | ![Menu principal](screenshots/interface_busca.png) | ![Resultado Busca](screenshots/interface_comparacao.png) |
@@ -178,7 +176,7 @@ Além do menu em modo texto, o projeto conta com uma interface gráfica simples 
 
 | [<img src="https://res.cloudinary.com/dll5ypaj7/image/fetch/f_auto,w_250,h_250,c_fill,r_30,bo_2px_solid_rgb:2d333b/https://github.com/eduarda-ogomes.png" width="200">](https://github.com/eduarda-ogomes)<br><nobr><sub style="font-size: 160%;">Maria Eduarda de Oliveira</sub></nobr> | [<img src="https://res.cloudinary.com/dll5ypaj7/image/fetch/f_auto,w_250,h_250,c_fill,r_30,bo_2px_solid_rgb:2d333b/https://github.com/pwdrinho.png" width="200">](https://github.com/pwdrinho)<br><nobr><sub style="font-size: 160%;">Pedro Lucas Barbosa</sub></nobr> |
 | :---: | :---: |
-| 21/1030658 | 241025710 |
+| 242028842 | 241025710 |
 
 </div>
 
