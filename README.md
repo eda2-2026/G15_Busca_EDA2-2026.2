@@ -164,9 +164,9 @@ Além do menu em modo texto, o projeto conta com uma interface gráfica simples 
 |---|---|
 | ![Menu principal](screenshots/interface_busca.png) | ![Resultado Busca](screenshots/interface_comparacao.png) |
 
-| Interface gráfica — Inserir |
+| Interface gráfica — Inserir | Interface gráfica — Excluir |
 |---|---|
-| ![Menu inserir](screenshots/interface_inserir.png) |
+| ![Menu inserir](screenshots/interface_inserir.png) | ![Menu excluir](screenshots/interface_excluir.png) |
 
 ## Vídeo de apresentação
 
