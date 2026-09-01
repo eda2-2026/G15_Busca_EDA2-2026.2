@@ -15,7 +15,7 @@ A cada busca, o programa mede e exibe o **tempo de execução (ms)** e o **núme
 
 ## Vídeo de apresentação
 
- **Link do vídeo:** *[https://youtu.be/xLXKlVrdwKM]*
+ **Link do vídeo:** [Video da Apresentação](https://youtu.be/xLXKlVrdwKM)
 
 ## Fonte dos dados
 
@@ -172,7 +172,7 @@ Além do menu em modo texto, o projeto conta com uma interface gráfica simples 
 
 | Terminal — Busca por ID | Terminal — Busca por Nome |
 |---|---|
-| ![Menu inserir](screenshots/terminal_buscaID.png) | ![Menu excluir](screenshots/terminal_buscaNome.png) |
+| ![Terminal ID](screenshots/terminal_buscaID.png) | ![Terminal Hash](screenshots/terminal_buscaHash.png) |
 
 ## Equipe
 
