@@ -13,6 +13,10 @@ O sistema permite **buscar, inserir e excluir filmes** de uma base com mais de 7
 
 A cada busca, o programa mede e exibe o **tempo de execução (ms)** e o **número de comparações/operações** de cada método, permitindo visualizar na prática a diferença de desempenho entre eles, o mesmo raciocínio por trás das complexidades O(n), O(√n) e O(1) estudadas em sala.
 
+## Vídeo de apresentação
+
+ **Link do vídeo:** *[https://youtu.be/xLXKlVrdwKM]*
+
 ## Fonte dos dados
 
 A base de dados é composta por informações sobre **filmes brasileiros e estrangeiros exibidos no Brasil entre 2009 e 2019**, obtida em formato `.csv` através do Kaggle:
@@ -166,9 +170,9 @@ Além do menu em modo texto, o projeto conta com uma interface gráfica simples 
 |---|---|
 | ![Menu inserir](screenshots/interface_inserir.png) | ![Menu excluir](screenshots/interface_excluir.png) |
 
-## Vídeo de apresentação
-
- **Link do vídeo:** *[adicionar link do YouTube/Drive aqui]*
+| Terminal — Busca por ID | Terminal — Busca por Nome |
+|---|---|
+| ![Menu inserir](screenshots/terminal_buscaID.png) | ![Menu excluir](screenshots/terminal_buscaNome.png) |
 
 ## Equipe
 
